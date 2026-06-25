@@ -8213,6 +8213,10 @@ bool BaseCompiler::emitArrayFill() {
 
   // Perform an initialization loop using `numElements` as the loop variable,
   // starting at `numElements` and counting down to zero.
+  sync();
+
+  // Perform the fill loop using `numElements` as the loop variable, counting
+  // down to zero.
   Label done;
   Label loop;
   // Skip initialization if numElements = 0
