@@ -9535,7 +9535,7 @@
 # Whether we want scrollbar-width: thin to behave as scrollbar-width: auto.
 - name: layout.css.scrollbar-width-thin.disabled
   type: RelaxedAtomicBool
-  value: false
+  value: true
   mirror: always
 
 # Whether supports() conditions in @import is enabled
@@ -16449,7 +16449,7 @@
 # pixels at full zoom of the minimum scrollbar width.
 - name: widget.non-native-theme.scrollbar.size.override
   type: uint32_t
-  value: 0
+  value: 16
   mirror: always
 
 # Whether we should use themed values for dark scrollbars.
@@ -16483,7 +16483,7 @@
 # one.
 - name: widget.non-native-theme.gtk.scrollbar.thumb-size
   type: float
-  value: 0.75
+  value: 1.0
   mirror: always
 
 # The minimum size of the scroll thumb, in the scrollbar direction.
@@ -16590,7 +16590,7 @@
 # Whether we use overlay scrollbars on GTK.
 - name: widget.gtk.overlay-scrollbars.enabled
   type: RelaxedAtomicBool
-  value: true
+  value: false
   mirror: always
 
 # Whether we hide the pointer while typing on Linux
