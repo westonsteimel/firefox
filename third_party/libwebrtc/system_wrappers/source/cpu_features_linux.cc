@@ -12,13 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef __GLIBC_PREREQ
-#define WEBRTC_GLIBC_PREREQ(a, b) __GLIBC_PREREQ(a, b)
-#else
-#define WEBRTC_GLIBC_PREREQ(a, b) 0
-#endif
-
-#if WEBRTC_GLIBC_PREREQ(2, 16)
+#if defined(__linux__)
 #include <sys/auxv.h>
 #else
 #include <errno.h>
@@ -40,7 +34,7 @@ uint64_t GetCPUFeaturesARM(void) {
   int architecture = 0;
   uint64_t hwcap = 0;
   const char* platform = NULL;
-#if WEBRTC_GLIBC_PREREQ(2, 16)
+#if defined(__linux__)
   hwcap = getauxval(AT_HWCAP);
   platform = (const char*)getauxval(AT_PLATFORM);
 #else
@@ -64,7 +58,7 @@ uint64_t GetCPUFeaturesARM(void) {
     }
     close(fd);
   }
-#endif  // WEBRTC_GLIBC_PREREQ(2, 16)
+#endif  // (__linux__)
 #if defined(__aarch64__)
   (void)platform;
   architecture = 8;
