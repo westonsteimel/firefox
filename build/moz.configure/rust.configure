@@ -280,6 +280,7 @@ def rust_supported_targets(rustc):
     return data
 
 
+@imports('os')
 def detect_rustc_target(
     host_or_target, compiler_info, arm_target, rust_supported_targets
 ):
@@ -411,7 +412,7 @@ def detect_rustc_target(
 
         return None
 
-    rustc_target = find_candidate(candidates)
+    rustc_target = os.environ.get('RUST_TARGET', find_candidate(candidates))
 
     if rustc_target is None:
         die("Don't know how to translate {} for rustc".format(host_or_target.alias))
