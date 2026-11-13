@@ -206,13 +206,13 @@ export var SearchUtils = {
 
   ENGINES_URLS: {
     "prod-main":
-      "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/search-config/records",
+      "https://%.invalid",
     "prod-preview":
-      "https://firefox.settings.services.mozilla.com/v1/buckets/main-preview/collections/search-config/records",
+      "https://%.invalid",
     "stage-main":
-      "https://firefox.settings.services.allizom.org/v1/buckets/main/collections/search-config/records",
+      "https://%.invalid",
     "stage-preview":
-      "https://firefox.settings.services.allizom.org/v1/buckets/main-preview/collections/search-config/records",
+      "https://%.invalid",
   },
 
   // The following constants are left undocumented in nsISearchService.idl
