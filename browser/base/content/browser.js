@@ -58,7 +58,6 @@ ChromeUtils.defineESModuleGetters(this, {
   PlacesTransactions: "resource://gre/modules/PlacesTransactions.sys.mjs",
   PlacesUIUtils: "resource:///modules/PlacesUIUtils.sys.mjs",
   PlacesUtils: "resource://gre/modules/PlacesUtils.sys.mjs",
-  Pocket: "chrome://pocket/content/Pocket.sys.mjs",
   PrivateBrowsingUtils: "resource://gre/modules/PrivateBrowsingUtils.sys.mjs",
   ProcessHangMonitor: "resource:///modules/ProcessHangMonitor.sys.mjs",
   PromptUtils: "resource://gre/modules/PromptUtils.sys.mjs",
@@ -67,7 +66,6 @@ ChromeUtils.defineESModuleGetters(this, {
   ReportBrokenSite: "resource:///modules/ReportBrokenSite.sys.mjs",
   SafeBrowsing: "resource://gre/modules/SafeBrowsing.sys.mjs",
   Sanitizer: "resource:///modules/Sanitizer.sys.mjs",
-  SaveToPocket: "chrome://pocket/content/SaveToPocket.sys.mjs",
   ScreenshotsUtils: "resource:///modules/ScreenshotsUtils.sys.mjs",
   SearchUIUtils: "resource:///modules/SearchUIUtils.sys.mjs",
   SessionStartup: "resource:///modules/sessionstore/SessionStartup.sys.mjs",
@@ -256,11 +254,6 @@ XPCOMUtils.defineLazyScriptGetter(
   this,
   "gGfxUtils",
   "chrome://browser/content/browser-graphics-utils.js"
-);
-XPCOMUtils.defineLazyScriptGetter(
-  this,
-  "pktUI",
-  "chrome://pocket/content/pktUI.js"
 );
 XPCOMUtils.defineLazyScriptGetter(
   this,
@@ -6783,17 +6776,6 @@ var gPrivateBrowsingUI = {
     );
 
     gBrowser.updateTitlebar();
-
-    // Bug 1846583 - hide pocket button in PBM
-    if (gUseFeltPrivacyUI) {
-      const saveToPocketButton = document.getElementById(
-        "save-to-pocket-button"
-      );
-      if (saveToPocketButton) {
-        saveToPocketButton.remove();
-        document.documentElement.setAttribute("pocketdisabled", "true");
-      }
-    }
 
     if (PrivateBrowsingUtils.permanentPrivateBrowsing) {
       // Adjust the New Window menu entries

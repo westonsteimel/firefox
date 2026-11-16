@@ -287,7 +287,6 @@ function generateDocumentation() {
     BackgroundAppUpdate: "BackgroundAppUpdate2",
     Certificates: "CertificatesDescription",
     DisableMasterPasswordCreation: "DisablePrimaryPasswordCreation",
-    DisablePocket: "DisablePocket2",
     DisableSetDesktopBackground: "DisableSetAsDesktopBackground",
     FirefoxHome: "FirefoxHome2",
     Permissions: "Permissions2",

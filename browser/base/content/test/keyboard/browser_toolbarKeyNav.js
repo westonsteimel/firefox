@@ -11,7 +11,7 @@
 
 const PERMISSIONS_PAGE =
   "https://example.com/browser/browser/base/content/test/permissions/permissions.html";
-const afterUrlBarButton = "save-to-pocket-button";
+const afterUrlBarButton = "fxa-toolbar-menu-button";
 
 // The DevEdition has the DevTools button in the toolbar by default. Remove it
 // to prevent branch-specific rules what button should be focused.
@@ -507,13 +507,10 @@ add_task(async function testCharacterNavigation() {
     );
     // Escape should reset the search.
     EventUtils.synthesizeKey("KEY_Escape");
-    // Now that the search is reset, pressing s should focus Save to Pocket.
-    await expectFocusAfterKey("s", "save-to-pocket-button");
     // Pressing i makes the search "si", so it should focus Sidebars.
     await expectFocusAfterKey("i", "sidebar-button");
     // Reset the search.
     EventUtils.synthesizeKey("KEY_Escape");
-    await expectFocusAfterKey("s", "save-to-pocket-button");
     // Pressing s again should find the next button starting with s: Sidebars.
     await expectFocusAfterKey("s", "sidebar-button");
   });

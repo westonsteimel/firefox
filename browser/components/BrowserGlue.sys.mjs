@@ -83,7 +83,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   SafeBrowsing: "resource://gre/modules/SafeBrowsing.sys.mjs",
   Sanitizer: "resource:///modules/Sanitizer.sys.mjs",
   SandboxUtils: "resource://gre/modules/SandboxUtils.sys.mjs",
-  SaveToPocket: "chrome://pocket/content/SaveToPocket.sys.mjs",
   ScreenshotsUtils: "resource:///modules/ScreenshotsUtils.sys.mjs",
   SearchSERPCategorization: "resource:///modules/SearchSERPTelemetry.sys.mjs",
   SearchSERPTelemetry: "resource:///modules/SearchSERPTelemetry.sys.mjs",
@@ -316,27 +315,6 @@ let JSWINDOWACTORS = {
     // load.
     matches: ["about:home*", "about:welcome", "about:newtab*"],
     remoteTypes: ["privilegedabout"],
-  },
-
-  AboutPocket: {
-    parent: {
-      esModuleURI: "resource:///actors/AboutPocketParent.sys.mjs",
-    },
-    child: {
-      esModuleURI: "resource:///actors/AboutPocketChild.sys.mjs",
-
-      events: {
-        DOMDocElementInserted: { capture: true },
-      },
-    },
-
-    remoteTypes: ["privilegedabout"],
-    matches: [
-      "about:pocket-saved*",
-      "about:pocket-signup*",
-      "about:pocket-home*",
-      "about:pocket-style-guide*",
-    ],
   },
 
   AboutPrivateBrowsing: {

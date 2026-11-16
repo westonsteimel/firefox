@@ -264,9 +264,6 @@ add_task(async function insertBeforeFirstItemInOverflow() {
   CustomizableUI.addWidgetToArea(
     kLibraryButton,
     "nav-bar",
-    CustomizableUI.getWidgetIdsInArea("nav-bar").indexOf(
-      "save-to-pocket-button"
-    )
   );
   let libraryButton = document.getElementById(kLibraryButton);
   await waitForElementShown(libraryButton);

@@ -3,7 +3,6 @@
 var gTestTab;
 var gContentAPI;
 
-var hasPocket = Services.prefs.getBoolPref("extensions.pocket.enabled");
 var hasQuit = AppConstants.platform != "macosx";
 
 requestLongerTimeout(2);
@@ -17,7 +16,6 @@ function getExpectedTargets() {
     "help",
     "logins",
     "pageAction-bookmark",
-    ...(hasPocket ? ["pocket"] : []),
     "privateWindow",
     ...(hasQuit ? ["quit"] : []),
     "readerMode-urlBar",

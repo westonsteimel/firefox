@@ -42,9 +42,6 @@ run-if = ["os == 'mac'"] # modal dialog disabling only working on OS X.
 ["browser_UITour_panel_close_annotation.js"]
 skip-if = ["true"] # Bug 1026310
 
-["browser_UITour_pocket.js"]
-skip-if = ["true"] # Disabled pending removal of pocket UI Tour
-
 ["browser_UITour_private_browsing.js"]
 
 ["browser_UITour_resetProfile.js"]

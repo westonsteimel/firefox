@@ -72,9 +72,6 @@ Structure:
         "new_tab": {
           "top_sites_clicked": <int>, // Number of times a Top Site was opened from the Awesome Screen.
                                       // Resets after each sent core ping.
-          "pocket_stories_clicked": <int>, // Number of time a Pocket Recommended website was opened
-                                           // from the Awesome Screen.
-                                           // Resets after each sent core ping.
         }
         "settings_advanced": {
           "restore_tabs": <boolean>, // State of the "Settings/Advanced/Restore Tabs" setting
@@ -95,8 +92,6 @@ Structure:
                                                          // setting is enabled.
             "topsites_enabled": <boolean>, // If the "Settings/General/Home/Top Sites"
                                            // setting is set to "Show".
-            "pocket_enabled": <boolean>, // If the "Settings/General/Home/Top Sites/Recommended by Pocket"
-                                         // setting is enabled.
             "recent_bookmarks_enabled": <boolean>, // If the "Settings/General/Home/Top Sites/
                                                    //          Additional Content/Recent Bookmarks"
                                                    // setting is enabled.
@@ -272,12 +267,6 @@ opened from the new tab page since the last time the core ping was sent.
 This counter is reset when the core ping has been sent.
 
 
-Fennec.new_tab.pocket_stories_clicked
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The `pocket_stories_clicked` contains the number of times a pocket story was
-opened from the new tab page since the last time the core ping was sent.
-This counter is reset when the core ping has been sent.
-
 Fennec.settings_advanced.restore_tabs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The `restore_tabs` field contains state of the "Settings/Advanced/Restore Tabs"
@@ -341,12 +330,6 @@ Fennec.settings_general.homepage.topsites_enabled
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The `topsites_enabled` setting is true if the "Settings/General/Home/Top Sites"
 setting is set to "Show".
-The value is determined at the time of sending the core ping.
-
-Fennec.settings_general.homepage.pocket_enabled
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The `pocket_enabled` setting is true if the
-"Settings/General/Home/Top Sites/Recommended by Pocket" setting is enabled.
 The value is determined at the time of sending the core ping.
 
 Fennec.settings_general.homepage.recent_bookmarks_enabled

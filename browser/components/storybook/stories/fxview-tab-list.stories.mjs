@@ -71,7 +71,6 @@ const Template = ({
         ></panel-item>
         <hr />
         <panel-item data-l10n-id="fxviewtabrow-add-bookmark"></panel-item>
-        <panel-item data-l10n-id="fxviewtabrow-save-to-pocket"></panel-item>
         <panel-item data-l10n-id="fxviewtabrow-copy-link"></panel-item>
       </panel-list>
     </fxview-tab-list>

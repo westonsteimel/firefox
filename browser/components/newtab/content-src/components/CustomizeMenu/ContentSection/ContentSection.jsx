@@ -15,7 +15,6 @@ export class ContentSection extends React.PureComponent {
 
     // Refs are necessary for dynamically measuring drawer heights for slide animations
     this.topSitesDrawerRef = React.createRef();
-    this.pocketDrawerRef = React.createRef();
   }
 
   inputUserEvent(eventSource, status) {

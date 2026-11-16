@@ -5267,37 +5267,7 @@ class MoreRecommendations extends (external_React_default()).PureComponent {
     return null;
   }
 }
-;// CONCATENATED MODULE: ./content-src/components/PocketLoggedInCta/PocketLoggedInCta.jsx
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
-
-class _PocketLoggedInCta extends (external_React_default()).PureComponent {
-  render() {
-    const {
-      pocketCta
-    } = this.props.Pocket;
-    return /*#__PURE__*/external_React_default().createElement("span", {
-      className: "pocket-logged-in-cta"
-    }, /*#__PURE__*/external_React_default().createElement("a", {
-      className: "pocket-cta-button",
-      href: pocketCta.ctaUrl ? pocketCta.ctaUrl : "https://getpocket.com/"
-    }, pocketCta.ctaButton ? pocketCta.ctaButton : /*#__PURE__*/external_React_default().createElement("span", {
-      "data-l10n-id": "newtab-pocket-cta-button"
-    })), /*#__PURE__*/external_React_default().createElement("a", {
-      href: pocketCta.ctaUrl ? pocketCta.ctaUrl : "https://getpocket.com/"
-    }, /*#__PURE__*/external_React_default().createElement("span", {
-      className: "cta-text"
-    }, pocketCta.ctaText ? pocketCta.ctaText : /*#__PURE__*/external_React_default().createElement("span", {
-      "data-l10n-id": "newtab-pocket-cta-text"
-    }))));
-  }
-}
-const PocketLoggedInCta = (0,external_ReactRedux_namespaceObject.connect)(state => ({
-  Pocket: state.Pocket
-}))(_PocketLoggedInCta);
 ;// CONCATENATED MODULE: ./content-src/components/Topics/Topics.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -5599,11 +5569,6 @@ const INITIAL_STATE = {
     data: {},
   },
   Sections: [],
-  Pocket: {
-    isUserLoggedIn: null,
-    pocketCta: {},
-    waitingForSpoc: true,
-  },
   // This is the new pocket configurable layout state.
   DiscoveryStream: {
     // This is a JSON-parsed copy of the discoverystream.config pref value.
@@ -6099,27 +6064,6 @@ function Sections(prevState = INITIAL_STATE.Sections, action) {
   }
 }
 
-function Pocket(prevState = INITIAL_STATE.Pocket, action) {
-  switch (action.type) {
-    case actionTypes.POCKET_WAITING_FOR_SPOC:
-      return { ...prevState, waitingForSpoc: action.data };
-    case actionTypes.POCKET_LOGGED_IN:
-      return { ...prevState, isUserLoggedIn: !!action.data };
-    case actionTypes.POCKET_CTA:
-      return {
-        ...prevState,
-        pocketCta: {
-          ctaButton: action.data.cta_button,
-          ctaText: action.data.cta_text,
-          ctaUrl: action.data.cta_url,
-          useCta: action.data.use_cta,
-        },
-      };
-    default:
-      return prevState;
-  }
-}
-
 function Reducers_sys_Personalization(prevState = INITIAL_STATE.Personalization, action) {
   switch (action.type) {
     case actionTypes.DISCOVERY_STREAM_PERSONALIZATION_LAST_UPDATED:
@@ -6221,7 +6165,6 @@ function DiscoveryStream(prevState = INITIAL_STATE.DiscoveryStream, action) {
         ...prevState,
         recentSavesEnabled: action.data.recentSavesEnabled,
         pocketButtonEnabled: action.data.pocketButtonEnabled,
-        saveToPocketCard: action.data.saveToPocketCard,
         hideDescriptions: action.data.hideDescriptions,
         compactImages: action.data.compactImages,
         imageGradient: action.data.imageGradient,
@@ -6329,30 +6272,6 @@ function DiscoveryStream(prevState = INITIAL_STATE.DiscoveryStream, action) {
         : nextState(items =>
             items.filter(item => item.url !== action.data.url)
           );
-
-    case actionTypes.PLACES_SAVED_TO_POCKET: {
-      const addPocketInfo = item => {
-        if (item.url === action.data.url) {
-          return Object.assign({}, item, {
-            open_url: action.data.open_url,
-            pocket_id: action.data.pocket_id,
-            context_type: "pocket",
-          });
-        }
-        return item;
-      };
-      return isNotReady()
-        ? prevState
-        : nextState(items => items.map(addPocketInfo));
-    }
-    case actionTypes.DELETE_FROM_POCKET:
-    case actionTypes.ARCHIVE_FROM_POCKET:
-      return isNotReady()
-        ? prevState
-        : nextState(items =>
-            items.filter(item => item.pocket_id !== action.data.pocket_id)
-          );
-
     case actionTypes.PLACES_BOOKMARK_ADDED: {
       const updateBookmarkInfo = item => {
         if (item.url === action.data.url) {
@@ -6463,7 +6382,6 @@ const reducers = {
   Prefs,
   Dialog,
   Sections,
-  Pocket,
   Personalization: Reducers_sys_Personalization,
   DiscoveryStream,
   Search,
@@ -7017,7 +6935,6 @@ class TopSiteLink extends (external_React_default()).PureComponent {
       "aria-hidden": true
     }, /*#__PURE__*/external_React_default().createElement("div", {
       className: selectedColor ? "icon-wrapper letter-fallback" : "icon-wrapper",
-      "data-fallback": letterFallback,
       style: selectedColor ? {
         backgroundColor: selectedColor
       } : {}
@@ -8085,7 +8002,6 @@ class Section extends (external_React_default()).PureComponent {
       eventSource,
       title,
       rows,
-      Pocket,
       topics,
       emptyState,
       dispatch,

@@ -29,7 +29,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   NewTabUtils: "resource://gre/modules/NewTabUtils.sys.mjs",
   NimbusFeatures: "resource://nimbus/ExperimentAPI.sys.mjs",
   PartnerLinkAttribution: "resource:///modules/PartnerLinkAttribution.sys.mjs",
-  pktApi: "chrome://pocket/content/pktApi.sys.mjs",
   PlacesUtils: "resource://gre/modules/PlacesUtils.sys.mjs",
   PrivateBrowsingUtils: "resource://gre/modules/PrivateBrowsingUtils.sys.mjs",
 });
@@ -289,87 +288,6 @@ export class PlacesFeed {
     }
   }
 
-  async saveToPocket(site, browser) {
-    const sendToPocket =
-      lazy.NimbusFeatures.pocketNewtab.getVariable("sendToPocket");
-    // An experiment to send the user directly to Pocket's signup page.
-    if (sendToPocket && !lazy.pktApi.isUserLoggedIn()) {
-      const pocketNewtabExperiment = lazy.ExperimentAPI.getExperiment({
-        featureId: "pocketNewtab",
-      });
-      const pocketSiteHost = Services.prefs.getStringPref(
-        "extensions.pocket.site"
-      ); // getpocket.com
-      let utmSource = "firefox_newtab_save_button";
-      // We want to know if the user is in a Pocket newtab related experiment.
-      let utmCampaign = pocketNewtabExperiment?.slug;
-      let utmContent = pocketNewtabExperiment?.branch?.slug;
-
-      const url = new URL(`https://${pocketSiteHost}/signup`);
-      url.searchParams.append("utm_source", utmSource);
-      if (utmCampaign && utmContent) {
-        url.searchParams.append("utm_campaign", utmCampaign);
-        url.searchParams.append("utm_content", utmContent);
-      }
-
-      const win = browser.ownerGlobal;
-      win.openTrustedLinkIn(url.href, "tab");
-      return;
-    }
-
-    const { url, title } = site;
-    try {
-      let data = await lazy.NewTabUtils.activityStreamLinks.addPocketEntry(
-        url,
-        title,
-        browser
-      );
-      if (data) {
-        this.store.dispatch(
-          ac.BroadcastToContent({
-            type: at.PLACES_SAVED_TO_POCKET,
-            data: {
-              url,
-              open_url: data.item.open_url,
-              title,
-              pocket_id: data.item.item_id,
-            },
-          })
-        );
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  /**
-   * Deletes an item from a user's saved to Pocket feed
-   * @param {int} itemID
-   *  The unique ID given by Pocket for that item; used to look the item up when deleting
-   */
-  async deleteFromPocket(itemID) {
-    try {
-      await lazy.NewTabUtils.activityStreamLinks.deletePocketEntry(itemID);
-      this.store.dispatch({ type: at.POCKET_LINK_DELETED_OR_ARCHIVED });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  /**
-   * Archives an item from a user's saved to Pocket feed
-   * @param {int} itemID
-   *  The unique ID given by Pocket for that item; used to look the item up when archiving
-   */
-  async archiveFromPocket(itemID) {
-    try {
-      await lazy.NewTabUtils.activityStreamLinks.archivePocketEntry(itemID);
-      this.store.dispatch({ type: at.POCKET_LINK_DELETED_OR_ARCHIVED });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   /**
    * Sends an attribution request for Top Sites interactions.
    * @param {object} data
@@ -542,15 +460,6 @@ export class PlacesFeed {
         break;
       case at.OPEN_PRIVATE_WINDOW:
         this.openLink(action, "window", true);
-        break;
-      case at.SAVE_TO_POCKET:
-        this.saveToPocket(action.data.site, action._target.browser);
-        break;
-      case at.DELETE_FROM_POCKET:
-        this.deleteFromPocket(action.data.pocket_id);
-        break;
-      case at.ARCHIVE_FROM_POCKET:
-        this.archiveFromPocket(action.data.pocket_id);
         break;
       case at.FILL_SEARCH_TERM:
         this.fillSearchTopSiteTerm(action);

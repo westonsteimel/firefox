@@ -97,7 +97,6 @@ add_task(async function test_no_extensions() {
         "forward-button",
         "spring",
         "urlbar-container",
-        "save-to-pocket-button",
         "reset-pbm-toolbar-button",
       ],
       "toolbar-menubar": [
@@ -144,7 +143,6 @@ add_task(async function test_existing_browser_actions_no_movement() {
         "forward-button",
         "spring",
         "urlbar-container",
-        "save-to-pocket-button",
         "reset-pbm-toolbar-button",
       ],
       "toolbar-menubar": [
@@ -187,7 +185,6 @@ add_task(async function test_migrate_extension_buttons() {
         "forward-button",
         "spring",
         "urlbar-container",
-        "save-to-pocket-button",
         "reset-pbm-toolbar-button",
       ],
       "toolbar-menubar": [
@@ -246,7 +243,6 @@ add_task(async function test_migrate_extension_buttons_no_overwrite() {
         "forward-button",
         "spring",
         "urlbar-container",
-        "save-to-pocket-button",
         "reset-pbm-toolbar-button",
       ],
       "toolbar-menubar": [
@@ -311,7 +307,6 @@ add_task(async function test_migrate_extension_buttons_elsewhere() {
         "ext2-browser-action",
         "urlbar-container",
         "ext3-browser-action",
-        "save-to-pocket-button",
         "reset-pbm-toolbar-button",
         "ext4-browser-action",
       ],

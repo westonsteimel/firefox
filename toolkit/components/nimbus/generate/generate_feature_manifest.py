@@ -27,7 +27,6 @@ NIMBUS_FALLBACK_PREFS = (
 ALLOWED_ISEARLYSTARTUP_FEATURE_IDS = {
     "aboutwelcome",
     "newtab",
-    "pocketNewtab",
     "searchConfiguration",
     "testFeature",
     "upgradeDialog",

@@ -814,12 +814,6 @@ library-bookmarks-menu =
 library-recent-activity-title =
   .value = Recent Activity
 
-## Pocket toolbar button
-
-save-to-pocket-button =
-  .label = Save to { -pocket-brand-name }
-  .tooltiptext = Save to { -pocket-brand-name }
-
 ## Repair text encoding toolbar button
 
 repair-text-encoding-button =

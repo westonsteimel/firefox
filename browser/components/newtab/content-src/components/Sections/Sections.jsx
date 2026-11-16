@@ -9,7 +9,6 @@ import { ComponentPerfTimer } from "content-src/components/ComponentPerfTimer/Co
 import { FluentOrText } from "content-src/components/FluentOrText/FluentOrText";
 import { connect } from "react-redux";
 import { MoreRecommendations } from "content-src/components/MoreRecommendations/MoreRecommendations";
-import { PocketLoggedInCta } from "content-src/components/PocketLoggedInCta/PocketLoggedInCta";
 import React from "react";
 import { Topics } from "content-src/components/Topics/Topics";
 import { TopSites } from "content-src/components/TopSites/TopSites";
@@ -167,7 +166,6 @@ export class Section extends React.PureComponent {
       eventSource,
       title,
       rows,
-      Pocket,
       topics,
       emptyState,
       dispatch,
@@ -182,36 +180,20 @@ export class Section extends React.PureComponent {
       isLast,
     } = this.props;
 
-    const waitingForSpoc =
-      id === "topstories" && this.props.Pocket.waitingForSpoc;
     const maxCardsPerRow = compactCards
       ? CARDS_PER_ROW_COMPACT_WIDE
       : CARDS_PER_ROW_DEFAULT;
     const { numRows } = this;
     const maxCards = maxCardsPerRow * numRows;
     const maxCardsOnNarrow = CARDS_PER_ROW_DEFAULT * numRows;
-
-    const { pocketCta, isUserLoggedIn } = Pocket || {};
-    const { useCta } = pocketCta || {};
-
-    // Don't display anything until we have a definitve result from Pocket,
-    // to avoid a flash of logged out state while we render.
-    const isPocketLoggedInDefined =
-      isUserLoggedIn === true || isUserLoggedIn === false;
-
     const hasTopics = topics && !!topics.length;
-
-    const shouldShowPocketCta =
-      id === "topstories" && useCta && isUserLoggedIn === false;
 
     // Show topics only for top stories and if it has loaded with topics.
     // The classs .top-stories-bottom-container ensures content doesn't shift as things load.
     const shouldShowTopics =
       id === "topstories" &&
       hasTopics &&
-      ((useCta && isUserLoggedIn === true) ||
-        (!useCta && isPocketLoggedInDefined));
-
+      (useCta && isUserLoggedIn === true)
     // We use topics to determine language support for read more.
     const shouldShowReadMore = read_more_endpoint && hasTopics;
 
@@ -301,12 +283,6 @@ export class Section extends React.PureComponent {
                 </div>
               )}
 
-              {shouldShowPocketCta && (
-                <div className="wrapper-cta">
-                  <PocketLoggedInCta />
-                </div>
-              )}
-
               <div className="wrapper-more-recommendations">
                 {shouldShowReadMore && (
                   <MoreRecommendations
@@ -332,7 +308,6 @@ Section.defaultProps = {
 
 export const SectionIntl = connect(state => ({
   Prefs: state.Prefs,
-  Pocket: state.Pocket,
 }))(Section);
 
 export class _Sections extends React.PureComponent {

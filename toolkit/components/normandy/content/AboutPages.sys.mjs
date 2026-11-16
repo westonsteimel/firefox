@@ -27,8 +27,6 @@ XPCOMUtils.defineLazyPreferenceGetter(
 
 /**
  * Class for managing an about: page that Normandy provides. Adapted from
- * browser/components/pocket/content/AboutPocket.sys.mjs.
- *
  * @implements nsIFactory
  * @implements nsIAboutModule
  */

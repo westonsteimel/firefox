@@ -66,12 +66,6 @@ function getHighlightsFeedForTest(sandbox) {
     .stub(NewTabUtils.activityStreamLinks, "getHighlights")
     .resolves(FAKE_LINKS);
   sandbox
-    .stub(NewTabUtils.activityStreamLinks, "deletePocketEntry")
-    .resolves({});
-  sandbox
-    .stub(NewTabUtils.activityStreamLinks, "archivePocketEntry")
-    .resolves({});
-  sandbox
     .stub(NewTabUtils.activityStreamProvider, "_processHighlights")
     .callsFake(l => l.slice(0, 1));
 
@@ -680,81 +674,6 @@ add_task(async function test_fetchHighlights_take_first_history_of_hostname() {
   Assert.equal(highlights.length, 2);
   Assert.equal(highlights[0].url, links[0].url);
   Assert.equal(highlights[1].url, links[2].url);
-
-  sandbox.restore();
-});
-
-add_task(
-  async function test_fetchHighlights_take_bookmark_pocket_download_of_same_hostname() {
-    info(
-      "HighlightsFeed.fetchHighlights should take a bookmark, a pocket, and " +
-        "downloaded item of the same hostname"
-    );
-    let sandbox = sinon.createSandbox();
-    let feed = getHighlightsFeedForTest(sandbox);
-
-    let links = [
-      { url: "https://site.com/bookmark", type: "bookmark" },
-      { url: "https://site.com/pocket", type: "pocket" },
-      { url: "https://site.com/download", type: "download" },
-    ];
-    NewTabUtils.activityStreamLinks.getHighlights.resolves(links);
-
-    let highlights = await fetchHighlightsRows(feed);
-
-    Assert.equal(highlights.length, 3);
-    Assert.equal(highlights[0].url, links[0].url);
-    Assert.equal(highlights[1].url, links[1].url);
-    Assert.equal(highlights[2].url, links[2].url);
-
-    sandbox.restore();
-  }
-);
-
-add_task(async function test_fetchHighlights_include_pocket_items() {
-  info(
-    "HighlightsFeed.fetchHighlights should includePocket pocket items when " +
-      "pref is true"
-  );
-  let sandbox = sinon.createSandbox();
-  let feed = getHighlightsFeedForTest(sandbox);
-  feed.store.state.Prefs.values["section.highlights.includePocket"] = true;
-  sandbox.spy(feed.linksCache, "request");
-
-  await fetchHighlightsRows(feed);
-
-  Assert.ok(
-    feed.linksCache.request.calledOnce,
-    "HighlightsFeed.linksCache.request called"
-  );
-  Assert.ok(
-    !feed.linksCache.request.firstCall.args[0].excludePocket,
-    "Should not be excluding Pocket items"
-  );
-
-  sandbox.restore();
-});
-
-add_task(async function test_fetchHighlights_do_not_include_pocket_items() {
-  info(
-    "HighlightsFeed.fetchHighlights should not includePocket pocket items " +
-      "when pref is false"
-  );
-  let sandbox = sinon.createSandbox();
-  let feed = getHighlightsFeedForTest(sandbox);
-  feed.store.state.Prefs.values["section.highlights.includePocket"] = false;
-  sandbox.spy(feed.linksCache, "request");
-
-  await fetchHighlightsRows(feed);
-
-  Assert.ok(
-    feed.linksCache.request.calledOnce,
-    "HighlightsFeed.linksCache.request called"
-  );
-  Assert.ok(
-    feed.linksCache.request.firstCall.args[0].excludePocket,
-    "Should be excluding Pocket items"
-  );
 
   sandbox.restore();
 });
@@ -1371,33 +1290,6 @@ add_task(
         isStartup: false,
       })
     );
-
-    sandbox.restore();
-  }
-);
-
-add_task(
-  async function test_onAction_fetch_highlights_on_deleting_archiving_pocket() {
-    info(
-      "HighlightsFeed.onAction should call fetchHighlights when deleting " +
-        "or archiving from Pocket"
-    );
-
-    let sandbox = sinon.createSandbox();
-    let feed = getHighlightsFeedForTest(sandbox);
-
-    await feed.fetchHighlights();
-    sandbox.spy(feed, "fetchHighlights");
-
-    feed.onAction({
-      type: at.POCKET_LINK_DELETED_OR_ARCHIVED,
-      data: { pocket_id: 12345 },
-    });
-    Assert.ok(
-      feed.fetchHighlights.calledOnce,
-      "HighlightsFeed.fetchHighlights called"
-    );
-    Assert.ok(feed.fetchHighlights.calledWithExactly({ broadcast: true }));
 
     sandbox.restore();
   }

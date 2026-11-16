@@ -110,7 +110,6 @@ if (typeof Mozilla == "undefined") {
    * - home
    * - logins
    * - pageAction-bookmark
-   * - pocket
    * - privateWindow
    * - quit
    * - readerMode-urlBar
@@ -321,7 +320,6 @@ if (typeof Mozilla == "undefined") {
    *
    * - appMenu
    * - bookmarks
-   * - pocket
    *
    * @see Mozilla.UITour.showMenu
    * @see Mozilla.UITour.hideMenu

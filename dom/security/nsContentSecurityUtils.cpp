@@ -1396,8 +1396,6 @@ void nsContentSecurityUtils::AssertAboutPageHasCSP(Document* aDocument) {
                  StringBeginsWith(aboutSpec, "about:home"_ns) ||
                  StringBeginsWith(aboutSpec, "about:welcome"_ns) ||
                  StringBeginsWith(aboutSpec, "about:devtools"_ns) ||
-                 StringBeginsWith(aboutSpec, "about:pocket-saved"_ns) ||
-                 StringBeginsWith(aboutSpec, "about:pocket-home"_ns),
              "about: page must not contain a CSP including a web scheme");
 
   if (aDocument->IsExtensionPage()) {

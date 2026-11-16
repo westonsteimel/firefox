@@ -110,9 +110,6 @@ newtab-menu-dismiss = Dismiss
 newtab-menu-pin = Pin
 newtab-menu-unpin = Unpin
 newtab-menu-delete-history = Delete from History
-newtab-menu-save-to-pocket = Save to { -pocket-brand-name }
-newtab-menu-delete-pocket = Delete from { -pocket-brand-name }
-newtab-menu-archive-pocket = Archive in { -pocket-brand-name }
 newtab-menu-show-privacy-info = Our sponsors & your privacy
 
 ## Message displayed in a modal window to explain privacy and provide context for sponsored content.
@@ -160,7 +157,6 @@ newtab-label-visited = Visited
 newtab-label-bookmarked = Bookmarked
 newtab-label-removed-bookmark = Bookmark removed
 newtab-label-recommended = Trending
-newtab-label-saved = Saved to { -pocket-brand-name }
 newtab-label-download = Downloaded
 
 # This string is used in the story cards to indicate sponsored content
@@ -225,22 +221,6 @@ newtab-discovery-empty-section-topstories-timed-out = Oops! We almost loaded thi
 ## Pocket Content Section.
 
 # This is shown at the bottom of the trending stories section and precedes a list of links to popular topics.
-newtab-pocket-read-more = Popular Topics:
-newtab-pocket-new-topics-title = Want even more stories? See these popular topics from { -pocket-brand-name }
-newtab-pocket-more-recommendations = More Recommendations
-newtab-pocket-learn-more = Learn more
-newtab-pocket-cta-button = Get { -pocket-brand-name }
-newtab-pocket-cta-text = Save the stories you love in { -pocket-brand-name }, and fuel your mind with fascinating reads.
-newtab-pocket-pocket-firefox-family = { -pocket-brand-name } is part of the { -brand-product-name } family
-
-# A save to Pocket button that shows over the card thumbnail on hover.
-newtab-pocket-save = Save
-newtab-pocket-saved = Saved
-
-## Pocket content onboarding experience dialog and modal for new users seeing the Pocket section for the first time, shown as the first item in the Pocket section.
-
-newtab-pocket-onboarding-discover = Discover the best of the web
-newtab-pocket-onboarding-cta = { -pocket-brand-name } explores a diverse range of publications to bring the most informative, inspirational, and trustworthy content right to your { -brand-product-name } browser.
 
 ## Error Fallback Content.
 ## This message and suggested action link are shown in each section of UI that fails to render.
@@ -265,8 +245,6 @@ newtab-custom-sponsored-sites = Sponsored shortcuts
 newtab-custom-stories-toggle =
   .label = Recommended stories
   .description = Exceptional content curated by the { -brand-product-name } family
-newtab-custom-pocket-sponsored = Sponsored stories
-newtab-custom-pocket-show-recent-saves = Show recent saves
 newtab-custom-recent-toggle =
   .label = Recent activity
   .description = A selection of recent sites and content

@@ -44,7 +44,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   TelemetrySession: "resource://gre/modules/TelemetrySession.sys.mjs",
   UTEventReporting: "resource://activity-stream/lib/UTEventReporting.sys.mjs",
   UpdateUtils: "resource://gre/modules/UpdateUtils.sys.mjs",
-  pktApi: "chrome://pocket/content/pktApi.sys.mjs",
 });
 ChromeUtils.defineLazyGetter(
   lazy,
@@ -111,8 +110,6 @@ const NEWTAB_PING_PREFS = {
   showSearch: Glean.newtabSearch.enabled,
   "feeds.topsites": Glean.topsites.enabled,
   showSponsoredTopSites: Glean.topsites.sponsoredEnabled,
-  "feeds.section.topstories": Glean.pocket.enabled,
-  showSponsored: Glean.pocket.sponsoredStoriesEnabled,
   topSitesRows: Glean.topsites.rows,
   showWeather: Glean.newtab.weatherEnabled,
 };
@@ -699,94 +696,6 @@ export class TelemetryFeed {
     this.sendUTEvent(userEvent, this.utEvents.sendUserEvent);
   }
 
-  handleDiscoveryStreamUserEvent(action) {
-    const pocket_logged_in_status = lazy.pktApi.isUserLoggedIn();
-    Glean.pocket.isSignedIn.set(pocket_logged_in_status);
-    this.handleUserEvent({
-      ...action,
-      data: {
-        ...(action.data || {}),
-        value: {
-          ...(action.data?.value || {}),
-          pocket_logged_in_status,
-        },
-      },
-    });
-    const session = this.sessions.get(au.getPortIdOfSender(action));
-    switch (action.data?.event) {
-      case "CLICK": {
-        const {
-          card_type,
-          topic,
-          recommendation_id,
-          tile_id,
-          shim,
-          fetchTimestamp,
-          firstVisibleTimestamp,
-          feature,
-        } = action.data.value ?? {};
-        if (
-          action.data.source === "POPULAR_TOPICS" ||
-          card_type === "topics_widget"
-        ) {
-          Glean.pocket.topicClick.record({
-            newtab_visit_id: session.session_id,
-            topic,
-          });
-        } else if (action.data.source === "FEATURE_HIGHLIGHT") {
-          Glean.newtab.tooltipClick.record({
-            newtab_visit_id: session.session_id,
-            feature,
-          });
-        } else if (["spoc", "organic"].includes(card_type)) {
-          Glean.pocket.click.record({
-            newtab_visit_id: session.session_id,
-            is_sponsored: card_type === "spoc",
-            position: action.data.action_position,
-            recommendation_id,
-            tile_id,
-          });
-          if (shim) {
-            Glean.pocket.shim.set(shim);
-            if (fetchTimestamp) {
-              Glean.pocket.fetchTimestamp.set(fetchTimestamp * 1000);
-            }
-            if (firstVisibleTimestamp) {
-              Glean.pocket.newtabCreationTimestamp.set(
-                firstVisibleTimestamp * 1000
-              );
-            }
-            GleanPings.spoc.submit("click");
-          }
-        }
-        break;
-      }
-      case "SAVE_TO_POCKET":
-        Glean.pocket.save.record({
-          newtab_visit_id: session.session_id,
-          is_sponsored: action.data.value?.card_type === "spoc",
-          position: action.data.action_position,
-          recommendation_id: action.data.value?.recommendation_id,
-          tile_id: action.data.value?.tile_id,
-        });
-        if (action.data.value?.shim) {
-          Glean.pocket.shim.set(action.data.value.shim);
-          if (action.data.value.fetchTimestamp) {
-            Glean.pocket.fetchTimestamp.set(
-              action.data.value.fetchTimestamp * 1000
-            );
-          }
-          if (action.data.value.newtabCreationTimestamp) {
-            Glean.pocket.newtabCreationTimestamp.set(
-              action.data.value.newtabCreationTimestamp * 1000
-            );
-          }
-          GleanPings.spoc.submit("save");
-        }
-        break;
-    }
-  }
-
   async handleASRouterUserEvent(action) {
     const { ping, pingType } = await this.createASRouterEvent(action);
     if (!pingType) {
@@ -1056,10 +965,6 @@ export class TelemetryFeed {
     // it can be applied to multiple topsites simultaneously.
     const { data } = action;
     for (const datum of data) {
-      if (datum.is_pocket_card) {
-        // There is no instrumentation for Pocket dismissals (yet).
-        continue;
-      }
       const { position, advertiser_name, tile_id, isSponsoredTopSite } = datum;
       Glean.topsites.dismiss.record({
         advertiser_name,
@@ -1110,16 +1015,6 @@ export class TelemetryFeed {
         tile_id: tile.id,
       });
       if (tile.shim) {
-        Glean.pocket.shim.set(tile.shim);
-        if (tile.fetchTimestamp) {
-          Glean.pocket.fetchTimestamp.set(tile.fetchTimestamp * 1000);
-        }
-        if (data.firstVisibleTimestamp) {
-          Glean.pocket.newtabCreationTimestamp.set(
-            data.firstVisibleTimestamp * 1000
-          );
-        }
-        GleanPings.spoc.submit("impression");
       }
     });
   }
@@ -1189,8 +1084,6 @@ export class TelemetryFeed {
       const fullPrefName = ACTIVITY_STREAM_PREF_BRANCH + pref;
       this._setNewtabPrefMetrics(fullPrefName, false);
     }
-    Glean.pocket.isSignedIn.set(lazy.pktApi.isUserLoggedIn());
-
     Services.prefs.addObserver(TOP_SITES_BLOCKED_SPONSORS_PREF, this);
     this._setBlockedSponsorsMetrics();
   }

@@ -140,25 +140,6 @@ module.exports = function (config) {
               branches: 0,
             },
             /**
-             * TopSitesFeed.sys.mjs is tested via an xpcshell test
-             */
-            "lib/TopSitesFeed.sys.mjs": {
-              statements: 9,
-              lines: 9,
-              functions: 5,
-              branches: 0,
-            },
-            /**
-             * TopStoresFeed.sys.mjs is not tested in automation and is slated
-             * for eventual removal.
-             */
-            "lib/TopStoriesFeed.sys.mjs": {
-              statements: 0,
-              lines: 0,
-              functions: 0,
-              branches: 0,
-            },
-            /**
              * WallpaperFeed.sys.mjs is tested via an xpcshell test
              */
             "lib/WallpaperFeed.sys.mjs": {

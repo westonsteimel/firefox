@@ -9,7 +9,6 @@
   --newtab-text-primary-color: rgb(21, 20, 26);
   --newtab-contextual-text-primary-color: light-dark(var(--newtab-text-primary-color), rgb(251, 251, 254));
   --newtab-primary-action-background: light-dark(rgb(0, 97, 224), rgb(0, 221, 255));
-  --newtab-primary-action-background-pocket: rgb(0, 128, 120);
   --newtab-text-secondary-color: color-mix(in srgb, var(--newtab-text-primary-color) 70%, transparent);
   --newtab-contextual-text-secondary-color: color-mix(in srgb, var(--newtab-contextual-text-primary-color) 70%, transparent);
   --newtab-weather-background-color: light-dark(rgba(255, 255, 255, 70%), rgba(35, 34, 43, 70%));
@@ -29,11 +28,9 @@
   --newtab-element-secondary-hover-color: color-mix(in srgb, currentColor 12%, transparent);
   --newtab-element-secondary-active-color: color-mix(in srgb, currentColor 25%, transparent);
   --newtab-primary-element-hover-color: color-mix(in srgb, var(--newtab-primary-action-background) 90%, #000);
-  --newtab-primary-element-hover-pocket-color: color-mix(in srgb, var(--newtab-primary-action-background-pocket) 90%, #000);
   --newtab-primary-element-active-color: color-mix(in srgb, var(--newtab-primary-action-background) 80%, #000);
   --newtab-primary-element-text-color: #FFF;
   --newtab-primary-action-background-dimmed: color-mix(in srgb, var(--newtab-primary-action-background) 25%, transparent);
-  --newtab-primary-action-background-pocket-dimmed: color-mix(in srgb, var(--newtab-primary-action-background-pocket) 25%, transparent);
   --newtab-border-color: color-mix(in srgb, var(--newtab-background-color) 75%, #000);
   --newtab-wordmark-color: light-dark(#20123A, rgb(251, 251, 254));
   --newtab-status-success: #058B00;
@@ -50,10 +47,7 @@
   --newtab-background-color-secondary: rgb(66, 65, 77);
   --newtab-text-primary-color: rgb(251, 251, 254);
   --newtab-contextual-text-primary-color: light-dark(rgb(21, 20, 26), var(--newtab-text-primary-color));
-  --newtab-primary-action-background-pocket: rgb(0, 221, 255);
-  --newtab-primary-action-background-pocket-dimmed: color-mix(in srgb, var(--newtab-primary-action-background) 25%, transparent);
   --newtab-primary-element-hover-color: color-mix(in srgb, var(--newtab-primary-action-background) 55%, #FFF);
-  --newtab-primary-element-hover-pocket-color: color-mix(in srgb, var(--newtab-primary-action-background-pocket) 55%, #FFF);
   --newtab-element-hover-color: color-mix(in srgb, var(--newtab-background-color) 80%, #FFF);
   --newtab-element-active-color: color-mix(in srgb, var(--newtab-background-color) 60%, #FFF);
   --newtab-element-secondary-color: color-mix(in srgb, currentColor 10%, transparent);
@@ -157,19 +151,6 @@
 }
 .icon.icon-edit {
   background-image: url("chrome://global/skin/icons/edit.svg");
-}
-.icon.icon-pocket {
-  background-image: url("chrome://global/skin/icons/pocket.svg");
-}
-.icon.icon-pocket-save {
-  background-image: url("chrome://global/skin/icons/pocket.svg");
-  fill: #FFF;
-}
-.icon.icon-pocket-delete {
-  background-image: url("chrome://activity-stream/content/data/content/assets/glyph-pocket-delete-16.svg");
-}
-.icon.icon-pocket-archive {
-  background-image: url("chrome://activity-stream/content/data/content/assets/glyph-pocket-archive-16.svg");
 }
 .icon.icon-history-item {
   background-image: url("chrome://browser/skin/history.svg");

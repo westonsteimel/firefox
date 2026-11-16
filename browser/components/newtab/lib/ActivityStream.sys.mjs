@@ -34,8 +34,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   Store: "resource://activity-stream/lib/Store.sys.mjs",
   SystemTickFeed: "resource://activity-stream/lib/SystemTickFeed.sys.mjs",
   TelemetryFeed: "resource://activity-stream/lib/TelemetryFeed.sys.mjs",
-  TopSitesFeed: "resource://activity-stream/lib/TopSitesFeed.sys.mjs",
-  TopStoriesFeed: "resource://activity-stream/lib/TopStoriesFeed.sys.mjs",
   WallpaperFeed: "resource://activity-stream/lib/WallpaperFeed.sys.mjs",
   WeatherFeed: "resource://activity-stream/lib/WeatherFeed.sys.mjs",
 });
@@ -568,61 +566,6 @@ const FEEDS_DATA = [
     value: false,
   },
   {
-    name: "system.topstories",
-    factory: () =>
-      new lazy.TopStoriesFeed(PREFS_CONFIG.get("discoverystream.config")),
-    title:
-      "System pref that fetches content recommendations from a configurable content provider",
-    // Dynamically determine if Pocket should be shown for a geo / locale
-    getValue: ({ geo, locale }) => {
-      // If we don't have geo, we don't want to flash the screen with stories while geo loads.
-      // Best to display nothing until geo is ready.
-      if (!geo) {
-        return false;
-      }
-      const preffedRegionsBlockString =
-        lazy.NimbusFeatures.pocketNewtab.getVariable("regionStoriesBlock") ||
-        "";
-      const preffedRegionsString =
-        lazy.NimbusFeatures.pocketNewtab.getVariable("regionStoriesConfig") ||
-        "";
-      const preffedLocaleListString =
-        lazy.NimbusFeatures.pocketNewtab.getVariable("localeListConfig") || "";
-      const preffedBlockRegions = preffedRegionsBlockString
-        .split(",")
-        .map(s => s.trim());
-      const preffedRegions = preffedRegionsString.split(",").map(s => s.trim());
-      const preffedLocales = preffedLocaleListString
-        .split(",")
-        .map(s => s.trim());
-      const locales = {
-        US: ["en-CA", "en-GB", "en-US"],
-        CA: ["en-CA", "en-GB", "en-US"],
-        GB: ["en-CA", "en-GB", "en-US"],
-        AU: ["en-CA", "en-GB", "en-US"],
-        NZ: ["en-CA", "en-GB", "en-US"],
-        IN: ["en-CA", "en-GB", "en-US"],
-        IE: ["en-CA", "en-GB", "en-US"],
-        ZA: ["en-CA", "en-GB", "en-US"],
-        CH: ["de"],
-        BE: ["de"],
-        DE: ["de"],
-        AT: ["de"],
-        IT: ["it"],
-        FR: ["fr"],
-        ES: ["es-ES"],
-        PL: ["pl"],
-        JP: ["ja", "ja-JP-mac"],
-      }[geo];
-
-      const regionBlocked = preffedBlockRegions.includes(geo);
-      const localeEnabled = locale && preffedLocales.includes(locale);
-      const regionEnabled =
-        preffedRegions.includes(geo) && !!locales && locales.includes(locale);
-      return !regionBlocked && (localeEnabled || regionEnabled);
-    },
-  },
-  {
     name: "systemtick",
     factory: () => new lazy.SystemTickFeed(),
     title: "Produces system tick events to periodically check for data expiry",
@@ -638,12 +581,6 @@ const FEEDS_DATA = [
     name: "favicon",
     factory: () => new lazy.FaviconFeed(),
     title: "Fetches tippy top manifests from remote service",
-    value: true,
-  },
-  {
-    name: "system.topsites",
-    factory: () => new lazy.TopSitesFeed(),
-    title: "Queries places and gets metadata for Top Sites section",
     value: true,
   },
   {

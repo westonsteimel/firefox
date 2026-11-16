@@ -226,108 +226,6 @@ describe("<Section>", () => {
 
       assert.lengthOf(wrapper.find(".topic"), 0);
     });
-    it("should render for non-empty topics", () => {
-      TOP_STORIES_SECTION.topics = [{ name: "topic1", url: "topic-url1" }];
-      wrapper = shallow(
-        <Section
-          Pocket={{ pocketCta: { useCta: true }, isUserLoggedIn: true }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-
-      assert.lengthOf(wrapper.find(Topics), 1);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 0);
-    });
-    it("should delay render of third rec to give time for potential spoc", async () => {
-      TOP_STORIES_SECTION.rows = [
-        { guid: 1, link: "http://localhost" },
-        { guid: 2, link: "http://localhost" },
-        { guid: 3, link: "http://localhost" },
-      ];
-      wrapper = shallow(
-        <Section
-          Pocket={{ waitingForSpoc: true, pocketCta: {} }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-      assert.lengthOf(wrapper.find(PlaceholderCard), 1);
-
-      wrapper.setProps({
-        Pocket: {
-          waitingForSpoc: false,
-          pocketCta: {},
-        },
-      });
-      assert.lengthOf(wrapper.find(PlaceholderCard), 0);
-    });
-    it("should render container for uninitialized topics to ensure content doesn't shift", () => {
-      delete TOP_STORIES_SECTION.topics;
-
-      wrapper = mountSectionIntlWithProps(TOP_STORIES_SECTION);
-
-      assert.lengthOf(wrapper.find(".top-stories-bottom-container"), 1);
-      assert.lengthOf(wrapper.find(Topics), 0);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 0);
-    });
-
-    it("should render a pocket cta if not logged in and set to display cta", () => {
-      TOP_STORIES_SECTION.topics = [{ name: "topic1", url: "topic-url1" }];
-      wrapper = shallow(
-        <Section
-          Pocket={{ pocketCta: { useCta: true }, isUserLoggedIn: false }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-
-      assert.lengthOf(wrapper.find(Topics), 0);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 1);
-    });
-    it("should render nothing while loading to avoid a flicker of log in state", () => {
-      TOP_STORIES_SECTION.topics = [{ name: "topic1", url: "topic-url1" }];
-      wrapper = shallow(
-        <Section
-          Pocket={{ pocketCta: { useCta: false } }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-
-      assert.lengthOf(wrapper.find(Topics), 0);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 0);
-    });
-    it("should render a topics list if set to not display cta with either logged or out", () => {
-      TOP_STORIES_SECTION.topics = [{ name: "topic1", url: "topic-url1" }];
-      wrapper = shallow(
-        <Section
-          Pocket={{ pocketCta: { useCta: false }, isUserLoggedIn: false }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-
-      assert.lengthOf(wrapper.find(Topics), 1);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 0);
-
-      wrapper = shallow(
-        <Section
-          Pocket={{ pocketCta: { useCta: false }, isUserLoggedIn: true }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-
-      assert.lengthOf(wrapper.find(Topics), 1);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 0);
-    });
-    it("should render nothing if set to display a cta and not logged in or out (waiting for state)", () => {
-      TOP_STORIES_SECTION.topics = [{ name: "topic1", url: "topic-url1" }];
-      wrapper = shallow(
-        <Section
-          Pocket={{ pocketCta: { useCta: true } }}
-          {...TOP_STORIES_SECTION}
-        />
-      );
-
-      assert.lengthOf(wrapper.find(Topics), 0);
-      assert.lengthOf(wrapper.find(PocketLoggedInCta), 0);
-    });
   });
 
   describe("impression stats", () => {
@@ -548,13 +446,6 @@ describe("<Section>", () => {
         maxRows: 1,
         eventSource: "TOP_STORIES",
       };
-      wrapper = shallow(
-        <Section
-          Pocket={{ waitingForSpoc: true, pocketCta: {} }}
-          {...TOP_STORIES_SECTION}
-          dispatch={dispatch}
-        />
-      );
       assert.notCalled(dispatch);
 
       wrapper.setProps({ initialized: true });

@@ -56,7 +56,6 @@ about-reader-toolbar-close = Close Reader View
 about-reader-toolbar-type-controls = Type controls
 about-reader-toolbar-text-layout-controls = Text and layout
 about-reader-toolbar-theme-controls = Theme
-about-reader-toolbar-savetopocket = Save to { -pocket-brand-name }
 
 ## Reader View colors menu
 

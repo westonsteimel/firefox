@@ -158,11 +158,10 @@ const BUILT_IN_SECTIONS = ({ pocketNewtab }) => ({
 
 export const SectionsManager = {
   ACTIONS_TO_PROXY: ["WEBEXT_CLICK", "WEBEXT_DISMISS"],
-  CONTEXT_MENU_PREFS: { CheckSavedToPocket: "extensions.pocket.enabled" },
+  CONTEXT_MENU_PREFS: { },
   CONTEXT_MENU_OPTIONS_FOR_HIGHLIGHT_TYPES: {
     history: [
       "CheckBookmark",
-      "CheckSavedToPocket",
       "Separator",
       "OpenInNewWindow",
       "OpenInPrivateWindow",
@@ -172,22 +171,12 @@ export const SectionsManager = {
     ],
     bookmark: [
       "CheckBookmark",
-      "CheckSavedToPocket",
       "Separator",
       "OpenInNewWindow",
       "OpenInPrivateWindow",
       "Separator",
       "BlockUrl",
       "DeleteUrl",
-    ],
-    pocket: [
-      "ArchiveFromPocket",
-      "CheckSavedToPocket",
-      "Separator",
-      "OpenInNewWindow",
-      "OpenInPrivateWindow",
-      "Separator",
-      "BlockUrl",
     ],
     download: [
       "OpenFile",
@@ -258,7 +247,6 @@ export const SectionsManager = {
     let storedPrefs;
     const featureConfig = {
       newtab: lazy.NimbusFeatures.newtab.getAllVariables() || {},
-      pocketNewtab: lazy.NimbusFeatures.pocketNewtab.getAllVariables() || {},
     };
     try {
       options = JSON.parse(optionsPrefValue);
