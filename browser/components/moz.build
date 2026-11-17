@@ -44,7 +44,6 @@ DIRS += [
     "ion",
     "messagepreview",
     "migration",
-    "newtab",
     "originattributes",
     "pagedata",
     "places",
