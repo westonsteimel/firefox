@@ -7,7 +7,6 @@
 
 #include "AboutRedirector.h"
 #include "nsNetUtil.h"
-#include "nsIAboutNewTabService.h"
 #include "nsIChannel.h"
 #include "nsIURI.h"
 #include "nsIProtocolHandler.h"
@@ -178,44 +177,9 @@ AboutRedirector::NewChannel(nsIURI* aURI, nsILoadInfo* aLoadInfo,
   nsCOMPtr<nsIIOService> ioService = do_GetIOService(&rv);
   NS_ENSURE_SUCCESS(rv, rv);
 
-  // If we're accessing about:home in the "privileged about content
-  // process", then we give the nsIAboutNewTabService the responsibility
-  // to return the nsIChannel, since it might be from the about:home
-  // startup cache.
-  if (XRE_IsContentProcess() && path.EqualsLiteral("home")) {
-    auto& remoteType = dom::ContentChild::GetSingleton()->GetRemoteType();
-    if (remoteType == PRIVILEGEDABOUT_REMOTE_TYPE) {
-      nsCOMPtr<nsIAboutNewTabService> aboutNewTabService =
-          do_GetService("@mozilla.org/browser/aboutnewtab-service;1", &rv);
-      NS_ENSURE_SUCCESS(rv, rv);
-
-      return aboutNewTabService->AboutHomeChannel(aURI, aLoadInfo, result);
-    }
-  }
-
   for (auto& redir : kRedirMap) {
     if (!strcmp(path.get(), redir.id)) {
       nsAutoCString url;
-
-      // Let the aboutNewTabService decide where to redirect for about:home and
-      // enabled about:newtab. Disabled about:newtab page uses fallback.
-      if (path.EqualsLiteral("home") ||
-          (StaticPrefs::browser_newtabpage_enabled() &&
-           path.EqualsLiteral("newtab"))) {
-        nsCOMPtr<nsIAboutNewTabService> aboutNewTabService =
-            do_GetService("@mozilla.org/browser/aboutnewtab-service;1", &rv);
-        NS_ENSURE_SUCCESS(rv, rv);
-        rv = aboutNewTabService->GetDefaultURL(url);
-        NS_ENSURE_SUCCESS(rv, rv);
-      }
-
-      if (path.EqualsLiteral("welcome")) {
-        nsCOMPtr<nsIAboutNewTabService> aboutNewTabService =
-            do_GetService("@mozilla.org/browser/aboutnewtab-service;1", &rv);
-        NS_ENSURE_SUCCESS(rv, rv);
-        rv = aboutNewTabService->GetWelcomeURL(url);
-        NS_ENSURE_SUCCESS(rv, rv);
-      }
 
       // fall back to the specified url in the map
       if (url.IsEmpty()) {
