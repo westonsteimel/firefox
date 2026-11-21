@@ -3466,8 +3466,8 @@ with only_when(compile_environment):
     @depends(target)
     def default_user_appdir(target):
         if target.kernel in ("WINNT", "Darwin"):
-            return "Mozilla"
-        return ".mozilla"
+            return "CombustibleCoyote"
+        return ".combustible-coyote"
 
     option(
         "--with-user-appdir",

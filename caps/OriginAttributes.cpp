@@ -106,7 +106,7 @@ static void PopulateTopLevelInfoFromURI(const bool aIsTopLevelDocument,
     MOZ_ASSERT(NS_SUCCEEDED(rv));
     // Remove the `{}` characters from both ends.
     filePath.Mid(filePath, 1, filePath.Length() - 2);
-    filePath.AppendLiteral(".mozilla");
+    filePath.AppendLiteral(".combustible-coyote");
     // Store the generated file path.
     topLevelInfo = NS_ConvertUTF8toUTF16(filePath);
     return;
