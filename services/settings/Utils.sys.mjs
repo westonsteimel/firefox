@@ -51,31 +51,7 @@ ChromeUtils.defineLazyGetter(lazy, "isRunningTests", () => {
 // Overriding the server URL is normally disabled on Beta and Release channels,
 // except under some conditions.
 ChromeUtils.defineLazyGetter(lazy, "allowServerURLOverride", () => {
-
-  return true; // always override in LW
-
-  if (!AppConstants.RELEASE_OR_BETA) {
-    // Always allow to override the server URL on Nightly/DevEdition.
-    return true;
-  }
-
-  if (lazy.isRunningTests) {
-    return true;
-  }
-
-  if (Services.env.get("MOZ_REMOTE_SETTINGS_DEVTOOLS") === "1") {
-    // Allow to override the server URL when using remote settings devtools.
-    return true;
-  }
-
-  if (lazy.gServerURL != AppConstants.REMOTE_SETTINGS_SERVER_URL) {
-    log.warn("Ignoring preference override of remote settings server");
-    log.warn(
-      "Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment"
-    );
-  }
-
-  return false;
+  return true; // always override in combustible-coyote
 });
 
 XPCOMUtils.defineLazyPreferenceGetter(
