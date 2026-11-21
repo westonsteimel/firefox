@@ -89,8 +89,6 @@
   <!-- Untranslated FTL files -->
   <link rel="localization" href="preview/enUS-searchFeatures.ftl" />
   <link rel="localization" href="preview/interventions.ftl" />
-  <link rel="localization" href="browser/shopping.ftl"/>
-  <link rel="localization" href="preview/shopping.ftl"/>
   <link rel="localization" href="preview/sidebar.ftl"/>
   <link rel="localization" href="preview/profiles.ftl"/>
   <link rel="localization" href="preview/onboarding.ftl"/>
@@ -123,7 +121,6 @@
   Services.scriptloader.loadSubScript("chrome://browser/content/places/places-menupopup.js", this);
   Services.scriptloader.loadSubScript("chrome://browser/content/search/autocomplete-popup.js", this);
   Services.scriptloader.loadSubScript("chrome://browser/content/search/searchbar.js", this);
-  Services.scriptloader.loadSubScript("chrome://browser/content/shopping/shopping-sidebar.js", this);
 
   window.onload = gBrowserInit.onLoad.bind(gBrowserInit);
   window.onunload = gBrowserInit.onUnload.bind(gBrowserInit);
