@@ -3463,7 +3463,6 @@ modules:
           including Activity Stream Router, about:welcome, UI tour.
         includes:
           - browser/components/asrouter/**/*
-          - browser/components/aboutwelcome/**/*
           - browser/components/uitour/**/*
           - toolkit/components/messaging-system/**/*
         meta:
@@ -3512,23 +3511,6 @@ modules:
         peers:
           - *mathjazz
           - *eemeli
-      - name: New Tab Page
-        description: The new tab/home page.
-        includes:
-          - browser/components/newtab/**/*
-        meta:
-          components:
-            - Firefox::New Tab Page
-          owners_emeritus:
-            - *Mardak
-          peers_emeritus:
-            - *k88hudson
-            - *aoprea
-        owners:
-          - *thecount
-        peers:
-          - *amy
-        machine_name: new_tab_page
 
       - name: Password Manager
         description: Managing, saving and filling logins.

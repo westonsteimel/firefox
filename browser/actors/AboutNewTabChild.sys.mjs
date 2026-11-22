@@ -39,15 +39,6 @@ export class AboutNewTabChild extends RemotePageChild {
         return; // about:newtab is a blank page
       }
 
-      // If the separate about:welcome page is enabled, we can skip all of this,
-      // since that mode doesn't load any of the Activity Stream bits.
-      if (
-        (lazy.NimbusFeatures.aboutwelcome.getVariable("enabled") ?? true) &&
-        this.contentWindow.location.pathname.includes("welcome")
-      ) {
-        return;
-      }
-
       const debug = !AppConstants.RELEASE_OR_BETA && lazy.ACTIVITY_STREAM_DEBUG;
       const debugString = debug ? "-dev" : "";
 

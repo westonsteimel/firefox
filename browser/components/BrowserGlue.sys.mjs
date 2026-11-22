@@ -8,7 +8,6 @@ import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.sys.mjs";
 const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {
-  AWToolbarButton: "resource:///modules/aboutwelcome/AWToolbarUtils.sys.mjs",
   ASRouter: "resource:///modules/asrouter/ASRouter.sys.mjs",
   ASRouterDefaultConfig:
     "resource:///modules/asrouter/ASRouterDefaultConfig.sys.mjs",
@@ -2967,22 +2966,6 @@ BrowserGlue.prototype = {
         },
       },
 
-      // Add the setup button if this is the first startup
-      {
-        name: "AWToolbarButton.SetupButton",
-        task: async () => {
-          if (
-            // Not in automation: the button changes CUI state,
-            // breaking tests. Check this first, so that the module
-            // doesn't load if it doesn't have to.
-            !Cu.isInAutomation &&
-            lazy.AWToolbarButton.hasToolbarButtonEnabled
-          ) {
-            await lazy.AWToolbarButton.maybeAddSetupButton();
-          }
-        },
-      },
-
       {
         name: "ASRouterNewTabHook.createInstance",
         task: () => {
@@ -4549,99 +4532,14 @@ BrowserGlue.prototype = {
     gBrowser.selectedTab = tab;
   },
 
-  async _showAboutWelcomeModal() {
-    const { gBrowser } = lazy.BrowserWindowTracker.getTopWindow();
-    const data = await lazy.NimbusFeatures.aboutwelcome.getAllVariables();
-
-    const config = {
-      type: "SHOW_SPOTLIGHT",
-      data: {
-        content: {
-          template: "multistage",
-          id: data?.id || "ABOUT_WELCOME_MODAL",
-          backdrop: data?.backdrop,
-          screens: data?.screens,
-          UTMTerm: data?.UTMTerm,
-        },
-      },
-    };
-
-    lazy.SpecialMessageActions.handleAction(config, gBrowser);
-  },
-
   async _maybeShowDefaultBrowserPrompt() {
-    // Highest priority is about:welcome window modal experiment
-    // Second highest priority is the upgrade dialog, which can include a "primary
-    // browser" request and is limited in various ways, e.g., major upgrades.
-    if (
-      lazy.BrowserHandler.firstRunProfile &&
-      lazy.NimbusFeatures.aboutwelcome.getVariable("showModal")
-    ) {
-      this._showAboutWelcomeModal();
-      return;
-    }
-    const dialogVersion = 106;
-    const dialogVersionPref = "browser.startup.upgradeDialog.version";
-    const dialogReason = await (async () => {
-      if (!lazy.BrowserHandler.majorUpgrade) {
-        return "not-major";
-      }
-      const lastVersion = Services.prefs.getIntPref(dialogVersionPref, 0);
-      if (lastVersion > dialogVersion) {
-        return "newer-shown";
-      }
-      if (lastVersion === dialogVersion) {
-        return "already-shown";
-      }
-
-      // Check the default branch as enterprise policies can set prefs there.
-      const defaultPrefs = Services.prefs.getDefaultBranch("");
-      if (!defaultPrefs.getBoolPref("browser.aboutwelcome.enabled", true)) {
-        return "no-welcome";
-      }
-      if (!Services.policies.isAllowed("postUpdateCustomPage")) {
-        return "disallow-postUpdate";
-      }
-
-      const showUpgradeDialog =
-        lazy.NimbusFeatures.upgradeDialog.getVariable("enabled");
-
-      return showUpgradeDialog ? "" : "disabled";
-    })();
-
-    // Record why the dialog is showing or not.
-    Services.telemetry.setEventRecordingEnabled("upgrade_dialog", true);
-    Services.telemetry.recordEvent(
-      "upgrade_dialog",
-      "trigger",
-      "reason",
-      dialogReason || "satisfied"
-    );
-
-    // Show the upgrade dialog if allowed and remember the version.
-    if (!dialogReason) {
-      Services.prefs.setIntPref(dialogVersionPref, dialogVersion);
-      this._showUpgradeDialog();
-      return;
-    }
-
-    const willPrompt = await DefaultBrowserCheck.willCheckDefaultBrowser(
-      /* isStartupCheck */ true
-    );
-    if (willPrompt) {
-      let win = lazy.BrowserWindowTracker.getTopWindow();
-      DefaultBrowserCheck.prompt(win);
-    } else if (await lazy.QuickSuggest.maybeShowOnboardingDialog()) {
-      return;
-    }
-
     await lazy.ASRouter.waitForInitialized;
     lazy.ASRouter.sendTriggerMessage({
       browser:
         lazy.BrowserWindowTracker.getTopWindow()?.gBrowser.selectedBrowser,
       // triggerId and triggerContext
       id: "defaultBrowserCheck",
-      context: { willShowDefaultPrompt: willPrompt, source: "startup" },
+      context: { willShowDefaultPrompt: false, source: "startup" },
     });
   },
 

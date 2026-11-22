@@ -4,17 +4,6 @@
 
 const lazy = {};
 
-ChromeUtils.defineESModuleGetters(lazy, {
-  AboutWelcomeTelemetry:
-    "resource:///modules/aboutwelcome/AboutWelcomeTelemetry.sys.mjs",
-});
-
-ChromeUtils.defineLazyGetter(
-  lazy,
-  "AWTelemetry",
-  () => new lazy.AboutWelcomeTelemetry()
-);
-
 export const Spotlight = {
   sendUserEventTelemetry(event, message, dispatch) {
     const ping = {

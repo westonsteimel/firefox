@@ -44,9 +44,6 @@ function renderMultistage(ready) {
   window.AWWaitForMigrationClose = receive("WAIT_FOR_MIGRATION_CLOSE");
   window.AWEvaluateScreenTargeting = receive("EVALUATE_SCREEN_TARGETING");
 
-  // Update styling to be compatible with about:welcome.
-  addStylesheet("chrome://browser/content/aboutwelcome/aboutwelcome.css");
-
   document.body.classList.add("onboardingContainer");
   document.body.id = "multi-stage-message-root";
   // This value is reported as the "page" in telemetry
