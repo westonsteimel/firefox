@@ -126,7 +126,6 @@ gecko_pings = [
 # Pings that are sent by Firefox Desktop.
 # Order is lexicographical, enforced by t/c/glean/tests/pytest/test_yaml_indices.py
 firefox_desktop_pings = [
-    "browser/components/newtab/pings.yaml",
     "browser/components/search/pings.yaml",
     "browser/components/urlbar/pings.yaml",
     "browser/modules/pings.yaml",
