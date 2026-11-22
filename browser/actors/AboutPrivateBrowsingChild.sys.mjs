@@ -41,22 +41,11 @@ export class AboutPrivateBrowsingChild extends RemotePageChild {
     const experiment = lazy.ExperimentAPI.getExperimentMetaData({
       featureId: "pbNewtab",
     });
-    if (experiment) {
-      Services.telemetry.recordEvent("aboutprivatebrowsing", "click", source);
-    }
     return experiment;
   }
 
   PrivateBrowsingShouldHideDefault() {
     const config = lazy.NimbusFeatures.pbNewtab.getAllVariables() || {};
     return config?.content?.hideDefault;
-  }
-
-  PrivateBrowsingPromoExposureTelemetry() {
-    lazy.NimbusFeatures.pbNewtab.recordExposureEvent({ once: false });
-  }
-
-  FeltPrivacyExposureTelemetry() {
-    lazy.NimbusFeatures.feltPrivacy.recordExposureEvent({ once: true });
   }
 }

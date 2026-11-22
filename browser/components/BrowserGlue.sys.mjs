@@ -4907,36 +4907,6 @@ BrowserGlue.prototype = {
     }
   },
 
-  _collectTelemetryPiPEnabled() {
-    Services.telemetry.setEventRecordingEnabled(
-      "pictureinpicture.settings",
-      true
-    );
-    Services.telemetry.setEventRecordingEnabled("pictureinpicture", true);
-
-    const TOGGLE_ENABLED_PREF =
-      "media.videocontrols.picture-in-picture.video-toggle.enabled";
-
-    const observe = (subject, topic) => {
-      const enabled = Services.prefs.getBoolPref(TOGGLE_ENABLED_PREF, false);
-      Services.telemetry.scalarSet("pictureinpicture.toggle_enabled", enabled);
-
-      // Record events when preferences change
-      if (topic === "nsPref:changed") {
-        if (enabled) {
-          Services.telemetry.recordEvent(
-            "pictureinpicture.settings",
-            "enable",
-            "settings"
-          );
-        }
-      }
-    };
-
-    Services.prefs.addObserver(TOGGLE_ENABLED_PREF, observe);
-    observe();
-  },
-
   QueryInterface: ChromeUtils.generateQI([
     "nsIObserver",
     "nsISupportsWeakReference",
@@ -5423,9 +5393,6 @@ ContentPermissionPrompt.prototype = {
       throw ex;
     }
 
-    let schemeHistogram = Services.telemetry.getKeyedHistogramById(
-      "PERMISSION_REQUEST_ORIGIN_SCHEME"
-    );
     let scheme = 0;
     try {
       if (request.principal.schemeIs("http")) {
@@ -5442,15 +5409,6 @@ ContentPermissionPrompt.prototype = {
       }
       return;
     }
-    schemeHistogram.add(type, scheme);
-
-    let userInputHistogram = Services.telemetry.getKeyedHistogramById(
-      "PERMISSION_REQUEST_HANDLING_USER_INPUT"
-    );
-    userInputHistogram.add(
-      type,
-      request.hasValidTransientUserGestureActivation
-    );
   },
 };
 
@@ -5520,15 +5478,6 @@ export var DefaultBrowserCheck = {
     }
     if (checkboxState) {
       shellService.shouldCheckDefaultBrowser = false;
-    }
-
-    try {
-      let resultEnum = buttonNumClicked * 2 + !checkboxState;
-      Services.telemetry
-        .getHistogramById("BROWSER_SET_DEFAULT_RESULT")
-        .add(resultEnum);
-    } catch (ex) {
-      /* Don't break if Telemetry is acting up. */
     }
   },
 
