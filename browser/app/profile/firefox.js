@@ -269,19 +269,8 @@ pref("browser.touchmode.auto", true);
 pref("browser.compactmode.show", false);
 
 // At startup, check if we're the default browser and prompt user if not.
-pref("browser.shell.checkDefaultBrowser", false);
 pref("browser.shell.shortcutFavicons",true);
-pref("browser.shell.mostRecentDateSetAsDefault", "");
-pref("browser.shell.skipDefaultBrowserCheckOnFirstRun", true);
-pref("browser.shell.didSkipDefaultBrowserCheckOnFirstRun", false);
-pref("browser.shell.defaultBrowserCheckCount", 0);
 #if defined(XP_WIN)
-// Attempt to set the default browser on Windows 10 using the UserChoice registry keys,
-// before falling back to launching the modern Settings dialog.
-pref("browser.shell.setDefaultBrowserUserChoice", true);
-// When setting default via UserChoice, temporarily rename an ancestor registry key to
-// prevent kernel drivers from locking the UserChoice subkeys.
-pref("browser.shell.setDefaultBrowserUserChoice.regRename", true);
 // When setting the default browser on Windows 10 using the UserChoice
 // registry keys, also try to set Firefox as the default PDF handler.
 pref("browser.shell.setDefaultPDFHandler", true);

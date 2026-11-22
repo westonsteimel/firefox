@@ -18,7 +18,6 @@ const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {
   AppMenuNotifications: "resource://gre/modules/AppMenuNotifications.sys.mjs",
-  DefaultBrowserCheck: "resource:///modules/BrowserGlue.sys.mjs",
   LaterRun: "resource:///modules/LaterRun.sys.mjs",
   SearchStaticData: "resource://gre/modules/SearchStaticData.sys.mjs",
   UrlbarPrefs: "resource:///modules/UrlbarPrefs.sys.mjs",
@@ -536,16 +535,6 @@ async function isBrowserShowingNotification(window) {
   // Other modals like spotlight messages or default browser prompt
   // can be shown at startup
   if (window.gDialogBox.isOpen) {
-    return true;
-  }
-
-  // On startup, the default browser check normally opens after the Search Tip.
-  // As a result, we can't check for the prompt's presence, but we can check if
-  // it plans on opening.
-  const willPrompt = await lazy.DefaultBrowserCheck.willCheckDefaultBrowser(
-    /* isStartupCheck */ false
-  );
-  if (willPrompt) {
     return true;
   }
 
