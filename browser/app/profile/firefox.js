@@ -753,12 +753,12 @@ pref("browser.shopping.experience2023.enabled", false);
 // 0 means the user has not opted in or out.
 // 1 means the user has opted in.
 // 2 means the user has opted out.
-pref("browser.shopping.experience2023.optedIn", 0);
+pref("browser.shopping.experience2023.optedIn", 2);
 
 // Activates the new experimental shopping sidebar.
 // True by default. This is handled by ShoppingUtils.handleAutoActivateOnProduct
 // to auto-activate the sidebar for non-opted-in users up to 2 times.
-pref("browser.shopping.experience2023.active", true);
+pref("browser.shopping.experience2023.active", false);
 
 // Enables ad exposure telemetry for users opted in to the shopping experience:
 // when this pref is true, each time a product is analyzed, we record if an ad

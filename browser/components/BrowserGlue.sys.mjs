@@ -8,7 +8,6 @@ import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.sys.mjs";
 const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {
-  AboutNewTab: "resource:///modules/AboutNewTab.sys.mjs",
   AWToolbarButton: "resource:///modules/aboutwelcome/AWToolbarUtils.sys.mjs",
   ASRouter: "resource:///modules/asrouter/ASRouter.sys.mjs",
   ASRouterDefaultConfig:
@@ -52,7 +51,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   LoginHelper: "resource://gre/modules/LoginHelper.sys.mjs",
   MigrationUtils: "resource:///modules/MigrationUtils.sys.mjs",
   NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
-  NewTabUtils: "resource://gre/modules/NewTabUtils.sys.mjs",
   NimbusFeatures: "resource://nimbus/ExperimentAPI.sys.mjs",
   Normandy: "resource://normandy/Normandy.sys.mjs",
   OnboardingMessageProvider:
@@ -90,7 +88,6 @@ ChromeUtils.defineESModuleGetters(lazy, {
   SessionStore: "resource:///modules/sessionstore/SessionStore.sys.mjs",
   ShellService: "resource:///modules/ShellService.sys.mjs",
   ShortcutUtils: "resource://gre/modules/ShortcutUtils.sys.mjs",
-  ShoppingUtils: "resource:///modules/ShoppingUtils.sys.mjs",
   SpecialMessageActions:
     "resource://messaging-system/lib/SpecialMessageActions.sys.mjs",
   TRRRacer: "resource:///modules/TRRPerformance.sys.mjs",
@@ -292,31 +289,6 @@ let JSWINDOWACTORS = {
     matches: ["about:messagepreview", "about:messagepreview?*"],
   },
 
-  AboutNewTab: {
-    parent: {
-      esModuleURI: "resource:///actors/AboutNewTabParent.sys.mjs",
-    },
-    child: {
-      esModuleURI: "resource:///actors/AboutNewTabChild.sys.mjs",
-      events: {
-        DOMDocElementInserted: {},
-        DOMContentLoaded: {},
-        load: { capture: true },
-        unload: { capture: true },
-        pageshow: {},
-        visibilitychange: {},
-      },
-    },
-    // The wildcard on about:newtab is for the # parameter
-    // that is used for the newtab devtools. The wildcard for about:home
-    // is similar, and also allows for falling back to loading the
-    // about:home document dynamically if an attempt is made to load
-    // about:home?jscache from the AboutHomeStartupCache as a top-level
-    // load.
-    matches: ["about:home*", "about:welcome", "about:newtab*"],
-    remoteTypes: ["privilegedabout"],
-  },
-
   AboutPrivateBrowsing: {
     parent: {
       esModuleURI: "resource:///actors/AboutPrivateBrowsingParent.sys.mjs",
@@ -376,20 +348,6 @@ let JSWINDOWACTORS = {
     },
 
     matches: ["about:tabcrashed*"],
-  },
-
-  AboutWelcomeShopping: {
-    parent: {
-      esModuleURI: "resource:///actors/AboutWelcomeParent.sys.mjs",
-    },
-    child: {
-      esModuleURI: "resource:///actors/AboutWelcomeChild.sys.mjs",
-      events: {
-        Update: {},
-      },
-    },
-    matches: ["about:shoppingsidebar"],
-    remoteTypes: ["privilegedabout"],
   },
 
   AboutWelcome: {
@@ -785,28 +743,6 @@ let JSWINDOWACTORS = {
       },
     },
     matches: ["about:studies*"],
-  },
-
-  ShoppingSidebar: {
-    parent: {
-      esModuleURI: "resource:///actors/ShoppingSidebarParent.sys.mjs",
-    },
-    child: {
-      esModuleURI: "resource:///actors/ShoppingSidebarChild.sys.mjs",
-      events: {
-        ContentReady: { wantUntrusted: true },
-        PolledRequestMade: { wantUntrusted: true },
-        // This is added so the actor instantiates immediately and makes
-        // methods available to the page js on load.
-        DOMDocElementInserted: {},
-        ReportProductAvailable: { wantUntrusted: true },
-        AdClicked: { wantUntrusted: true },
-        AdImpression: { wantUntrusted: true },
-        DisableShopping: { wantUntrusted: true },
-      },
-    },
-    matches: ["about:shoppingsidebar"],
-    remoteTypes: ["privilegedabout"],
   },
 
   SpeechDispatcher: {
@@ -1818,8 +1754,6 @@ BrowserGlue.prototype = {
 
   // the first browser window has finished initializing
   _onFirstWindowLoaded: function BG__onFirstWindowLoaded(aWindow) {
-    lazy.AboutNewTab.init();
-
     lazy.TabCrashHandler.init();
 
     lazy.ProcessHangMonitor.init();
@@ -1857,8 +1791,6 @@ BrowserGlue.prototype = {
     }
 
     lazy.PageThumbs.init();
-
-    lazy.NewTabUtils.init();
 
     Services.telemetry.setEventRecordingEnabled(
       "security.ui.protections",
@@ -2180,10 +2112,8 @@ BrowserGlue.prototype = {
       () => lazy.Interactions.uninit(),
       () => lazy.PageDataService.uninit(),
       () => lazy.PageThumbs.uninit(),
-      () => lazy.NewTabUtils.uninit(),
       () => lazy.Normandy.uninit(),
       () => lazy.RFPHelper.uninit(),
-      () => lazy.ShoppingUtils.uninit(),
       () => lazy.ASRouterNewTabHook.destroy(),
       () => {
         if (AppConstants.MOZ_UPDATER) {
@@ -3146,13 +3076,6 @@ BrowserGlue.prototype = {
           ),
         task: async () => {
           await lazy.DAPTelemetrySender.startup();
-        },
-      },
-
-      {
-        name: "ShoppingUtils.init",
-        task: () => {
-          lazy.ShoppingUtils.init();
         },
       },
 
@@ -6193,13 +6116,7 @@ export var AboutHomeStartupCache = {
       this.log.error("Somehow got the wrong process type.");
       return { pageInputStream: null, scriptInputStream: null };
     }
-
-    let state = lazy.AboutNewTab.activityStream.store.getState();
-    return new Promise(resolve => {
-      this._cacheDeferred = resolve;
-      this.log.trace("Parent is requesting cache streams.");
-      this._procManager.sendAsyncMessage(this.CACHE_REQUEST_MESSAGE, { state });
-    });
+    return { pageInputStream: null, scriptInputStream: null};
   },
 
   /**

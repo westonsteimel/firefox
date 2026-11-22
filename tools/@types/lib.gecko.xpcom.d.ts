@@ -15096,7 +15096,6 @@ interface nsIXPCComponents_Interfaces {
   nsIBitsNewRequestCallback: nsJSIID<nsIBitsNewRequestCallback>;
   nsIBitsRequest: nsJSIID<nsIBitsRequest>;
   nsIBitsCallback: nsJSIID<nsIBitsCallback>;
-  nsIAboutNewTabService: nsJSIID<nsIAboutNewTabService>;
   nsIBrowserHandler: nsJSIID<nsIBrowserHandler>;
   nsIAddonPolicyService: nsJSIID<nsIAddonPolicyService>;
   nsIAddonContentPolicy: nsJSIID<nsIAddonContentPolicy>;
