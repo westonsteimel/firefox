@@ -37,7 +37,6 @@ const lazy = {};
 
 ChromeUtils.defineESModuleGetters(lazy, {
   AddonManager: "resource://gre/modules/AddonManager.sys.mjs",
-  AboutNewTab: "resource:///modules/AboutNewTab.sys.mjs",
   ASRouterPreferences:
     "resource:///modules/asrouter/ASRouterPreferences.sys.mjs",
   AttributionCode: "resource:///modules/AttributionCode.sys.mjs",
@@ -59,18 +58,6 @@ ChromeUtils.defineLazyGetter(lazy, "fxAccounts", () => {
   ).getFxAccountsSingleton();
 });
 
-XPCOMUtils.defineLazyPreferenceGetter(
-  lazy,
-  "cfrFeaturesUserPref",
-  "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features",
-  true
-);
-XPCOMUtils.defineLazyPreferenceGetter(
-  lazy,
-  "cfrAddonsUserPref",
-  "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons",
-  true
-);
 XPCOMUtils.defineLazyPreferenceGetter(
   lazy,
   "hasAccessedFxAPanel",
@@ -653,17 +640,6 @@ const TargetingGetters = {
   get recentBookmarks() {
     return QueryCache.queries.RecentBookmarks.get();
   },
-  get pinnedSites() {
-    return NewTabUtils.pinnedLinks.links.map(site =>
-      site
-        ? {
-            url: site.url,
-            host: new URL(site.url).hostname,
-            searchTopSite: site.searchTopSite,
-          }
-        : {}
-    );
-  },
   get providerCohorts() {
     return lazy.ASRouterPreferences.providers.reduce((prev, current) => {
       prev[current.id] = current.cohort || "";
@@ -776,18 +752,6 @@ const TargetingGetters = {
       urls,
       isDefault: lazy.HomePage.isDefault,
       isLocked: lazy.HomePage.locked,
-    };
-  },
-  get newtabSettings() {
-    const url = lazy.AboutNewTab.newTabURL;
-    const { isWebExt, isCustomUrl, urls } = parseAboutPageURL(url);
-
-    return {
-      isWebExt,
-      isCustomUrl,
-      isDefault: lazy.AboutNewTab.activityStreamEnabled,
-      url: urls[0].url,
-      host: urls[0].host,
     };
   },
   get activeNotifications() {

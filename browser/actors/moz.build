@@ -32,8 +32,6 @@ with Files("WebRTCChild.sys.mjs"):
     BUG_COMPONENT = ("Firefox", "Site Permissions")
 
 FINAL_TARGET_FILES.actors += [
-    "AboutNewTabChild.sys.mjs",
-    "AboutNewTabParent.sys.mjs",
     "AboutPrivateBrowsingChild.sys.mjs",
     "AboutPrivateBrowsingParent.sys.mjs",
     "AboutProtectionsChild.sys.mjs",

@@ -1409,17 +1409,6 @@ var BookmarkingUI = {
     if (!uri) {
       return false;
     }
-    // Prevent loading AboutNewTab.sys.mjs during startup path if it
-    // is only the newTabURL getter we are interested in.
-    let newTabURL = Cu.isESModuleLoaded(
-      "resource:///modules/AboutNewTab.sys.mjs"
-    )
-      ? AboutNewTab.newTabURL
-      : "about:newtab";
-    // Don't treat a custom "about:blank" new tab URL as the "New Tab Page"
-    // due to about:blank being used in different contexts and the
-    // difficulty in determining if the eventual page load is
-    // about:blank or if the about:blank load is just temporary.
     if (newTabURL == "about:blank") {
       newTabURL = "about:newtab";
     }

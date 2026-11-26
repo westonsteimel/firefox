@@ -18,7 +18,6 @@ ChromeUtils.importESModule("resource://gre/modules/NotificationDB.sys.mjs");
 
 ChromeUtils.defineESModuleGetters(this, {
   AMTelemetry: "resource://gre/modules/AddonManager.sys.mjs",
-  AboutNewTab: "resource:///modules/AboutNewTab.sys.mjs",
   AboutReaderParent: "resource:///actors/AboutReaderParent.sys.mjs",
   AddonManager: "resource://gre/modules/AddonManager.sys.mjs",
   BrowserSearchTelemetry: "resource:///modules/BrowserSearchTelemetry.sys.mjs",

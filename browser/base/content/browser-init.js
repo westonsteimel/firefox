@@ -936,8 +936,6 @@ var gBrowserInit = {
 
       // If the given URI is different from the homepage, we want to load it.
       if (uri != defaultArgs) {
-        AboutNewTab.noteNonDefaultStartup();
-
         if (uri instanceof Ci.nsIArray) {
           // Transform the nsIArray of nsISupportsString's into a JS Array of
           // JS strings.

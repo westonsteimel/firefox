@@ -9,7 +9,6 @@ var { ExtensionParent } = ChromeUtils.importESModule(
 );
 
 ChromeUtils.defineESModuleGetters(this, {
-  AboutNewTab: "resource:///modules/AboutNewTab.sys.mjs",
   ExtensionControlledPopup:
     "resource:///modules/ExtensionControlledPopup.sys.mjs",
   ExtensionSettingsStore:
@@ -34,12 +33,6 @@ ChromeUtils.defineLazyGetter(this, "newTabPopup", () => {
     learnMoreLink: "extension-home",
     preferencesLocation: "home-newtabOverride",
     preferencesEntrypoint: "addon-manage-newtab-override",
-    onObserverAdded() {
-      AboutNewTab.willNotifyUser = true;
-    },
-    onObserverRemoved() {
-      AboutNewTab.willNotifyUser = false;
-    },
     async beforeDisableAddon(popup, win) {
       // ExtensionControlledPopup will disable the add-on once this function completes.
       // Disabling an add-on should remove the tabs that it has open, but we want

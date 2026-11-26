@@ -12,7 +12,6 @@ var { XPCOMUtils } = ChromeUtils.importESModule(
 );
 
 ChromeUtils.defineESModuleGetters(this, {
-  AboutNewTab: "resource:///modules/AboutNewTab.sys.mjs",
   BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs",
   BrowserWindowTracker: "resource:///modules/BrowserWindowTracker.sys.mjs",
   ContextualIdentityService:
@@ -37,33 +36,10 @@ Object.defineProperty(this, "BROWSER_NEW_TAB_URL", {
   enumerable: true,
   get() {
     if (PrivateBrowsingUtils.isWindowPrivate(window)) {
-      if (
-        !PrivateBrowsingUtils.permanentPrivateBrowsing &&
-        !AboutNewTab.newTabURLOverridden
-      ) {
-        return "about:privatebrowsing";
-      }
-      // If an extension controls the setting and does not have private
-      // browsing permission, use the default setting.
-      let extensionControlled = Services.prefs.getBoolPref(
-        "browser.newtab.extensionControlled",
-        false
-      );
-      let privateAllowed = Services.prefs.getBoolPref(
-        "browser.newtab.privateAllowed",
-        false
-      );
-      // There is a potential on upgrade that the prefs are not set yet, so we double check
-      // for moz-extension.
-      if (
-        !privateAllowed &&
-        (extensionControlled ||
-          AboutNewTab.newTabURL.startsWith("moz-extension://"))
-      ) {
         return "about:privatebrowsing";
       }
     }
-    return AboutNewTab.newTabURL;
+    return "about:home";
   },
 });
 
